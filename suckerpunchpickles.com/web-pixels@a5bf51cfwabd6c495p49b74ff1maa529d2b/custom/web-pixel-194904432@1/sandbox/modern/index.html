@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Web Pixels Manager Sandbox</title>
+    <script src="https://suckerpunchpickles.com/cdn/wpm/sa5bf51cfwabd6c495p49b74ff1maa529d2bm.js"></script>
+
+    <script type="text/javascript">
+        (function(shopify) {
+            shopify.extend('WebPixel::Render', function(api) {
+                var analytics = api.analytics,
+                    browser = api.browser,
+                    init = api.init;
+                // Step 1. Initialize the JavaScript pixel SDK (make sure to exclude HTML)
+                analytics.subscribe('page_viewed', (event) => {
+                    ! function(a, b, c, d, e, f, g) {
+                        a.ktag || (e = function() {
+                                e.sendEvent ? e.sendEvent(arguments) : e.ktq.push(arguments)
+                            }, e.ktq = [],
+                            a.ktag = e, f = b.getElementsByTagName(d)[0], g = b.createElement(d), g.async = !0, g.src = c, f.parentNode.appendChild(g))
+                    }(window, document, "https://resources.xg4ken.com/js/v2/ktag.js?tid=KT-N4A62-3EA", "script");
+
+                    ktag('setup', 'KT-N4A62-3EA', 'USER_ID_VALUE');
+                });
+
+                // Step 2. Subscribe to customer events with analytics.subscribe(), and add tracking
+                //  analytics.subscribe("all_standard_events", function (event) {
+                //    console.log("Event data ", event?.data);
+                //  });
+
+                // Conversion_SuckerPunch_Purchase_Primary_SP_[Platform]
+                analytics.subscribe('checkout_completed', (event) => {
+                    const checkout = event.data.checkout;
+
+                    const script = document.createElement('script');
+                    script.src = 'https://services.xg4ken.com/js/kenshoo.js?cid=c8458f82-b580-4eae-b88d-7bfe4fbf4afc';
+                    script.async = true;
+                    script.onload = () => {
+                        kenshoo.trackConversion('9042', 'c8458f82-b580-4eae-b88d-7bfe4fbf4afc', {
+                            conversionType: 'SPP_Purchase',
+                            revenue: checkout.totalPrice ? .amount ? ? 0.0,
+                            currency: checkout.totalPrice ? .currencyCode ? ? 'USD',
+                            orderId: checkout.order ? .id ? ? '',
+                            promoCode: checkout.discountApplications ? .[0] ? .title ? ? '',
+                        });
+                    };
+
+                    document.getElementsByTagName('script')[0].parentNode.appendChild(script);
+                });
+
+            });
+        })(self.webPixelsManager.createShopifyExtend('194904432', 'custom'));
+    </script>
+
+</head>
+
+<body></body>
+
+</html>

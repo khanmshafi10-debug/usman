@@ -1,0 +1,5 @@
+node_modules/
+dart_lab_submission/
+__pycache__/
+*.pyc
+.gemini/

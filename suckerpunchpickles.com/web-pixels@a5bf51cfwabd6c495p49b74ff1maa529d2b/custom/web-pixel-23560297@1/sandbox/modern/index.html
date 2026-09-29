@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Web Pixels Manager Sandbox</title>
+    <script src="https://suckerpunchpickles.com/cdn/wpm/sa5bf51cfwabd6c495p49b74ff1maa529d2bm.js"></script>
+
+    <script type="text/javascript">
+        (function(shopify) {
+            shopify.extend('WebPixel::Render', function(api) {
+                var analytics = api.analytics,
+                    browser = api.browser,
+                    init = api.init;
+                const script = document.createElement('script');
+                script.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=AW-11350572130');
+                script.setAttribute('async', '');
+                document.head.appendChild(script);
+
+                window.dataLayer = window.dataLayer || [];
+
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag('js', new Date());
+                gtag('config', 'AW-11350572130');
+
+
+
+                analytics.subscribe("checkout_completed", (event) => {
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-11350572130/NtRgCOSjgcEZEOL4r6Qq',
+                        'value': event.data.checkout.totalPrice.amount,
+                        'transaction_id': event.data.checkout.order.id,
+                        'currency': event.data.checkout.currencyCode
+                    });
+                });
+            });
+        })(self.webPixelsManager.createShopifyExtend('23560297', 'custom'));
+    </script>
+
+</head>
+
+<body></body>
+
+</html>
